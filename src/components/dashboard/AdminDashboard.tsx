@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   SimpleGrid,
@@ -18,14 +18,8 @@ import {
   Th,
   Td,
   Badge,
-} from '@chakra-ui/react';
-import { 
-  Users, 
-  Database, 
-  FileText, 
-  Shield, 
-  AlertTriangle 
-} from 'lucide-react';
+} from "@chakra-ui/react";
+import { Users, Database, FileText, Shield, AlertTriangle } from "lucide-react";
 
 interface StatCardProps {
   title: string;
@@ -35,17 +29,11 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ title, stat, icon, helpText }) => {
-  const bgColor = useColorModeValue('white', 'gray.700');
-  const textColor = useColorModeValue('gray.600', 'gray.400');
-  
+  const bgColor = useColorModeValue("white", "gray.700");
+  const textColor = useColorModeValue("gray.600", "gray.400");
+
   return (
-    <Stat
-      px={4}
-      py={5}
-      bg={bgColor}
-      rounded="lg"
-      boxShadow="md"
-    >
+    <Stat px={4} py={5} bg={bgColor} rounded="lg" boxShadow="md">
       <Flex justifyContent="space-between">
         <Box>
           <StatLabel fontWeight="medium" isTruncated>
@@ -55,16 +43,10 @@ const StatCard: React.FC<StatCardProps> = ({ title, stat, icon, helpText }) => {
             {stat}
           </StatNumber>
           {helpText && (
-            <StatHelpText color={textColor}>
-              {helpText}
-            </StatHelpText>
+            <StatHelpText color={textColor}>{helpText}</StatHelpText>
           )}
         </Box>
-        <Box
-          my="auto"
-          color="blue.500"
-          alignContent="center"
-        >
+        <Box my="auto" color="blue.500" alignContent="center">
           <Icon as={icon} w={8} h={8} />
         </Box>
       </Flex>
@@ -73,28 +55,78 @@ const StatCard: React.FC<StatCardProps> = ({ title, stat, icon, helpText }) => {
 };
 
 const AdminDashboard: React.FC = () => {
-  const bgColor = useColorModeValue('white', 'gray.700');
-  
+  const bgColor = useColorModeValue("white", "gray.700");
+
   // Mock data for recent activities
   const recentActivities = [
-    { id: 1, user: 'John Doe', action: 'Uploaded file', resource: 'student_records.csv', timestamp: '2 minutes ago' },
-    { id: 2, user: 'Jane Smith', action: 'Added storage config', resource: 'AWS S3 Bucket', timestamp: '1 hour ago' },
-    { id: 3, user: 'Mike Johnson', action: 'Created user', resource: 'teacher@example.com', timestamp: '3 hours ago' },
-    { id: 4, user: 'Sarah Williams', action: 'Shared file', resource: 'essay_feedback.pdf', timestamp: '5 hours ago' },
-    { id: 5, user: 'Robert Brown', action: 'Deleted file', resource: 'old_records.xlsx', timestamp: '1 day ago' },
+    {
+      id: 1,
+      user: "John Doe",
+      action: "Uploaded file",
+      resource: "student_records.csv",
+      timestamp: "2 minutes ago",
+    },
+    {
+      id: 2,
+      user: "Jane Smith",
+      action: "Added storage config",
+      resource: "AWS S3 Bucket",
+      timestamp: "1 hour ago",
+    },
+    {
+      id: 3,
+      user: "Mike Johnson",
+      action: "Created user",
+      resource: "teacher@example.com",
+      timestamp: "3 hours ago",
+    },
+    {
+      id: 4,
+      user: "Sarah Williams",
+      action: "Shared file",
+      resource: "essay_feedback.pdf",
+      timestamp: "5 hours ago",
+    },
+    {
+      id: 5,
+      user: "Robert Brown",
+      action: "Deleted file",
+      resource: "old_records.xlsx",
+      timestamp: "1 day ago",
+    },
   ];
-  
+
   // Mock data for security alerts
   const securityAlerts = [
-    { id: 1, type: 'Failed login', details: '5 failed attempts for user admin@example.com', severity: 'high', timestamp: '10 minutes ago' },
-    { id: 2, type: 'New device login', details: 'New device login from Chicago, IL', severity: 'medium', timestamp: '2 hours ago' },
-    { id: 3, type: 'File access attempt', details: 'Unauthorized access attempt to student records', severity: 'high', timestamp: '1 day ago' },
+    {
+      id: 1,
+      type: "Failed login",
+      details: "5 failed attempts for user admin@example.com",
+      severity: "high",
+      timestamp: "10 minutes ago",
+    },
+    {
+      id: 2,
+      type: "New device login",
+      details: "New device login from Chicago, IL",
+      severity: "medium",
+      timestamp: "2 hours ago",
+    },
+    {
+      id: 3,
+      type: "File access attempt",
+      details: "Unauthorized access attempt to student records",
+      severity: "high",
+      timestamp: "1 day ago",
+    },
   ];
-  
+
   return (
     <Box>
-      <Heading size="lg" mb={6}>Admin Dashboard</Heading>
-      
+      <Heading size="lg" mb={6}>
+        Admin Dashboard
+      </Heading>
+
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={6} mb={8}>
         <StatCard
           title="Total Users"
@@ -121,10 +153,12 @@ const AdminDashboard: React.FC = () => {
           helpText="Up 5% from last week"
         />
       </SimpleGrid>
-      
+
       <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={8}>
         <Box bg={bgColor} p={6} rounded="lg" boxShadow="md">
-          <Heading size="md" mb={4}>Recent Activities</Heading>
+          <Heading size="md" mb={4}>
+            Recent Activities
+          </Heading>
           <Box overflowX="auto">
             <Table variant="simple" size="sm">
               <Thead>
@@ -148,7 +182,7 @@ const AdminDashboard: React.FC = () => {
             </Table>
           </Box>
         </Box>
-        
+
         <Box bg={bgColor} p={6} rounded="lg" boxShadow="md">
           <Flex align="center" mb={4}>
             <Icon as={AlertTriangle} color="orange.500" mr={2} />
@@ -174,11 +208,11 @@ const AdminDashboard: React.FC = () => {
                     <Td>
                       <Badge
                         colorScheme={
-                          alert.severity === 'high'
-                            ? 'red'
-                            : alert.severity === 'medium'
-                            ? 'orange'
-                            : 'green'
+                          alert.severity === "high"
+                            ? "red"
+                            : alert.severity === "medium"
+                            ? "orange"
+                            : "green"
                         }
                       >
                         {alert.severity}

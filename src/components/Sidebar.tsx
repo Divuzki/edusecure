@@ -1,26 +1,26 @@
-import React from 'react';
-import { 
-  Box, 
-  Flex, 
-  Icon, 
-  Link, 
-  Stack, 
-  Text, 
-  useColorModeValue 
-} from '@chakra-ui/react';
-import { 
-  Home, 
-  FileText, 
-  Users, 
-  Database, 
-  Lock, 
-  Share2, 
-  Settings, 
-  HelpCircle, 
-  BookOpen
-} from 'lucide-react';
-import { useAuthStore } from '../store/authStore';
-import { Link as RouterLink } from 'react-router-dom';
+import React from "react";
+import {
+  Box,
+  Flex,
+  Icon,
+  Link,
+  Stack,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import {
+  Home,
+  FileText,
+  Users,
+  Database,
+  Lock,
+  Share2,
+  Settings,
+  HelpCircle,
+  BookOpen,
+} from "lucide-react";
+import { useAuthStore } from "../store/authStore";
+import { Link as RouterLink } from "react-router-dom";
 
 interface NavItemProps {
   icon: React.ElementType;
@@ -29,15 +29,15 @@ interface NavItemProps {
 }
 
 const NavItem: React.FC<NavItemProps> = ({ icon, children, to }) => {
-  const activeBg = useColorModeValue('blue.50', 'blue.900');
-  const hoverBg = useColorModeValue('gray.100', 'gray.700');
-  
+  const activeBg = useColorModeValue("blue.50", "blue.900");
+  const hoverBg = useColorModeValue("gray.100", "gray.700");
+
   return (
     <Link
       as={RouterLink}
       to={to}
-      style={{ textDecoration: 'none' }}
-      _focus={{ boxShadow: 'none' }}
+      style={{ textDecoration: "none" }}
+      _focus={{ boxShadow: "none" }}
     >
       <Flex
         align="center"
@@ -50,11 +50,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon, children, to }) => {
           bg: hoverBg,
         }}
       >
-        <Icon
-          mr="4"
-          fontSize="16"
-          as={icon}
-        />
+        <Icon mr="4" fontSize="16" as={icon} />
         <Text>{children}</Text>
       </Flex>
     </Link>
@@ -63,16 +59,16 @@ const NavItem: React.FC<NavItemProps> = ({ icon, children, to }) => {
 
 const Sidebar: React.FC = () => {
   const { user } = useAuthStore();
-  const bgColor = useColorModeValue('white', 'gray.900');
-  const borderColor = useColorModeValue('gray.200', 'gray.700');
-  
+  const bgColor = useColorModeValue("white", "gray.900");
+  const borderColor = useColorModeValue("gray.200", "gray.700");
+
   if (!user) {
     return null;
   }
-  
+
   return (
     <Box
-      w={{ base: 'full', md: 60 }}
+      w={{ base: "full", md: 60 }}
       bg={bgColor}
       borderRight="1px"
       borderRightColor={borderColor}
@@ -83,8 +79,8 @@ const Sidebar: React.FC = () => {
         <NavItem icon={Home} to="/dashboard">
           Dashboard
         </NavItem>
-        
-        {user.role === 'admin' && (
+
+        {user.role === "admin" && (
           <>
             <NavItem icon={Users} to="/users">
               User Management
@@ -97,8 +93,8 @@ const Sidebar: React.FC = () => {
             </NavItem>
           </>
         )}
-        
-        {(user.role === 'teacher' || user.role === 'admin') && (
+
+        {(user.role === "teacher" || user.role === "admin") && (
           <>
             <NavItem icon={FileText} to="/essays">
               Essays & Grading
@@ -108,8 +104,8 @@ const Sidebar: React.FC = () => {
             </NavItem>
           </>
         )}
-        
-        {user.role === 'student' && (
+
+        {user.role === "student" && (
           <>
             <NavItem icon={FileText} to="/my-essays">
               My Essays
@@ -119,7 +115,7 @@ const Sidebar: React.FC = () => {
             </NavItem>
           </>
         )}
-        
+
         <NavItem icon={Lock} to="/security">
           Security
         </NavItem>

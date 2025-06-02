@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { create } from 'zustand';
-import { AuthState, User } from '../types';
+import { AuthState } from '../types';
 import { auth } from '../utils/api';
 
 interface AuthStore extends AuthState {
@@ -29,9 +31,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
         isAuthenticated: true, 
         isLoading: false 
       });
-    } catch (error) {
+    } catch (error: any) {
       set({ 
-        error: error instanceof Error ? error.message : 'Login failed', 
+        error: error.response ? error.response?.data?.error : error instanceof Error ? error.message : 'Login failed', 
         isLoading: false 
       });
     }
@@ -50,9 +52,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
         isAuthenticated: true, 
         isLoading: false 
       });
-    } catch (error) {
+    } catch (error: any) {
       set({ 
-        error: error instanceof Error ? error.message : 'Registration failed', 
+        error: error.response ? error.response?.data?.error : error instanceof Error ? error.message : 'Registration failed', 
         isLoading: false 
       });
     }
@@ -85,7 +87,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
         token, 
         isAuthenticated: true 
       });
-    } catch (error) {
+    } catch (_) {
       localStorage.removeItem('auth_token');
       set({ 
         user: null, 

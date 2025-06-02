@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   SimpleGrid,
@@ -20,13 +20,8 @@ import {
   Progress,
   Button,
   Badge,
-} from '@chakra-ui/react';
-import { 
-  FileText, 
-  BookOpen, 
-  Award, 
-  Clock 
-} from 'lucide-react';
+} from "@chakra-ui/react";
+import { FileText, BookOpen, Award, Clock } from "lucide-react";
 
 interface StatCardProps {
   title: string;
@@ -36,17 +31,11 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ title, stat, icon, helpText }) => {
-  const bgColor = useColorModeValue('white', 'gray.700');
-  const textColor = useColorModeValue('gray.600', 'gray.400');
-  
+  const bgColor = useColorModeValue("white", "gray.700");
+  const textColor = useColorModeValue("gray.600", "gray.400");
+
   return (
-    <Stat
-      px={4}
-      py={5}
-      bg={bgColor}
-      rounded="lg"
-      boxShadow="md"
-    >
+    <Stat px={4} py={5} bg={bgColor} rounded="lg" boxShadow="md">
       <Flex justifyContent="space-between">
         <Box>
           <StatLabel fontWeight="medium" isTruncated>
@@ -56,16 +45,10 @@ const StatCard: React.FC<StatCardProps> = ({ title, stat, icon, helpText }) => {
             {stat}
           </StatNumber>
           {helpText && (
-            <StatHelpText color={textColor}>
-              {helpText}
-            </StatHelpText>
+            <StatHelpText color={textColor}>{helpText}</StatHelpText>
           )}
         </Box>
-        <Box
-          my="auto"
-          color="blue.500"
-          alignContent="center"
-        >
+        <Box my="auto" color="blue.500" alignContent="center">
           <Icon as={icon} w={8} h={8} />
         </Box>
       </Flex>
@@ -74,27 +57,66 @@ const StatCard: React.FC<StatCardProps> = ({ title, stat, icon, helpText }) => {
 };
 
 const StudentDashboard: React.FC = () => {
-  const bgColor = useColorModeValue('white', 'gray.700');
-  
+  const bgColor = useColorModeValue("white", "gray.700");
+
   // Mock data for essays
   const essays = [
-    { id: 1, title: 'The Impact of Climate Change', course: 'Environmental Science', score: 85, status: 'graded' },
-    { id: 2, title: 'Analysis of Hamlet', course: 'English Literature', score: 92, status: 'graded' },
-    { id: 3, title: 'Modern Economic Theories', course: 'Economics', status: 'submitted' },
-    { id: 4, title: 'The French Revolution', course: 'World History', status: 'draft' },
+    {
+      id: 1,
+      title: "The Impact of Climate Change",
+      course: "Environmental Science",
+      score: 85,
+      status: "graded",
+    },
+    {
+      id: 2,
+      title: "Analysis of Hamlet",
+      course: "English Literature",
+      score: 92,
+      status: "graded",
+    },
+    {
+      id: 3,
+      title: "Modern Economic Theories",
+      course: "Economics",
+      status: "submitted",
+    },
+    {
+      id: 4,
+      title: "The French Revolution",
+      course: "World History",
+      status: "draft",
+    },
   ];
-  
+
   // Mock data for courses
   const courses = [
-    { id: 1, name: 'English Literature 101', progress: 85, nextDeadline: 'Essay on Macbeth (2 days)' },
-    { id: 2, name: 'World History', progress: 72, nextDeadline: 'Research Paper (1 week)' },
-    { id: 3, name: 'Economics Fundamentals', progress: 68, nextDeadline: 'Quiz (Tomorrow)' },
+    {
+      id: 1,
+      name: "English Literature 101",
+      progress: 85,
+      nextDeadline: "Essay on Macbeth (2 days)",
+    },
+    {
+      id: 2,
+      name: "World History",
+      progress: 72,
+      nextDeadline: "Research Paper (1 week)",
+    },
+    {
+      id: 3,
+      name: "Economics Fundamentals",
+      progress: 68,
+      nextDeadline: "Quiz (Tomorrow)",
+    },
   ];
-  
+
   return (
     <Box>
-      <Heading size="lg" mb={6}>Student Dashboard</Heading>
-      
+      <Heading size="lg" mb={6}>
+        Student Dashboard
+      </Heading>
+
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={6} mb={8}>
         <StatCard
           title="My Essays"
@@ -121,10 +143,12 @@ const StudentDashboard: React.FC = () => {
           helpText="Next: Tomorrow at 11:59 PM"
         />
       </SimpleGrid>
-      
+
       <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={8}>
         <Box bg={bgColor} p={6} rounded="lg" boxShadow="md">
-          <Heading size="md" mb={4}>My Essays</Heading>
+          <Heading size="md" mb={4}>
+            My Essays
+          </Heading>
           <Box overflowX="auto">
             <Table variant="simple" size="sm">
               <Thead>
@@ -146,20 +170,20 @@ const StudentDashboard: React.FC = () => {
                     <Td>
                       <Badge
                         colorScheme={
-                          essay.status === 'graded'
-                            ? 'green'
-                            : essay.status === 'submitted'
-                            ? 'blue'
-                            : 'gray'
+                          essay.status === "graded"
+                            ? "green"
+                            : essay.status === "submitted"
+                            ? "blue"
+                            : "gray"
                         }
                       >
                         {essay.status}
                       </Badge>
                     </Td>
-                    <Td>{essay.score ? `${essay.score}/100` : '-'}</Td>
+                    <Td>{essay.score ? `${essay.score}/100` : "-"}</Td>
                     <Td>
                       <Button size="xs" colorScheme="blue">
-                        {essay.status === 'draft' ? 'Edit' : 'View'}
+                        {essay.status === "draft" ? "Edit" : "View"}
                       </Button>
                     </Td>
                   </Tr>
@@ -168,9 +192,11 @@ const StudentDashboard: React.FC = () => {
             </Table>
           </Box>
         </Box>
-        
+
         <Box bg={bgColor} p={6} rounded="lg" boxShadow="md">
-          <Heading size="md" mb={4}>My Courses</Heading>
+          <Heading size="md" mb={4}>
+            My Courses
+          </Heading>
           <Box overflowX="auto">
             <Table variant="simple" size="sm">
               <Thead>

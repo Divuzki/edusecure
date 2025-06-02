@@ -1,34 +1,27 @@
-import React from 'react';
-import { 
-  Box, 
-  Flex, 
-  Heading, 
-  IconButton, 
-  Menu, 
-  MenuButton, 
-  MenuItem, 
-  MenuList, 
-  Spacer, 
-  useColorMode, 
-  useColorModeValue 
-} from '@chakra-ui/react';
-import { 
-  User, 
-  LogOut, 
-  Moon, 
-  Sun, 
-  Shield, 
-  Bell 
-} from 'lucide-react';
-import { useAuthStore } from '../store/authStore';
+import React from "react";
+import {
+  Box,
+  Flex,
+  Heading,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Spacer,
+  useColorMode,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { User, LogOut, Moon, Sun, Shield, Bell } from "lucide-react";
+import { useAuthStore } from "../store/authStore";
 
 const Header: React.FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { user, logout } = useAuthStore();
-  
-  const bgColor = useColorModeValue('white', 'gray.900');
-  const borderColor = useColorModeValue('gray.200', 'gray.700');
-  
+
+  const bgColor = useColorModeValue("white", "gray.900");
+  const borderColor = useColorModeValue("gray.200", "gray.700");
+
   return (
     <Flex
       as="header"
@@ -43,27 +36,29 @@ const Header: React.FC = () => {
     >
       <Flex align="center">
         <Shield size={24} />
-        <Heading size="md" ml={2}>EduSecure</Heading>
+        <Heading size="md" ml={2}>
+          EduSecure
+        </Heading>
       </Flex>
-      
+
       <Spacer />
-      
+
       <Flex align="center">
         <IconButton
           aria-label="Toggle color mode"
-          icon={colorMode === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          icon={colorMode === "light" ? <Moon size={20} /> : <Sun size={20} />}
           variant="ghost"
           mr={3}
           onClick={toggleColorMode}
         />
-        
+
         <IconButton
           aria-label="Notifications"
           icon={<Bell size={20} />}
           variant="ghost"
           mr={3}
         />
-        
+
         {user && (
           <Menu>
             <MenuButton

@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
-import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
-import Sidebar from './Sidebar';
-import Header from './Header';
+import React, { ReactNode } from "react";
+import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
+import Sidebar from "./Sidebar";
+import Header from "./Header";
 
 interface LayoutProps {
   children: ReactNode;
@@ -16,7 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Box
           flex="1"
           p={4}
-          bg={useColorModeValue('gray.50', 'gray.800')}
+          bg={useColorModeValue("gray.50", "gray.800")}
           overflowY="auto"
         >
           {children}

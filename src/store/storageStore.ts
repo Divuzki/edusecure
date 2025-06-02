@@ -10,13 +10,13 @@ interface StorageState {
 }
 
 interface StorageStore extends StorageState {
-  testConnection: (config: any) => Promise<void>;
+  testConnection: (config: CloudStorageConfig) => Promise<void>;
   listFiles: () => Promise<void>;
-  uploadFile: (file: File, metadata: any) => Promise<void>;
-  generateShareLink: (fileId: string, options: any) => Promise<string>;
+  uploadFile: (file: File, metadata?: Record<string, unknown>) => Promise<void>;
+  generateShareLink: (fileId: string, options: Record<string, unknown>) => Promise<string>;
 }
 
-export const useStorageStore = create<StorageStore>((set, get) => ({
+export const useStorageStore = create<StorageStore>((set) => ({
   configs: [],
   files: [],
   isLoading: false,

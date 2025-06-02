@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   SimpleGrid,
@@ -19,13 +19,8 @@ import {
   Td,
   Progress,
   Button,
-} from '@chakra-ui/react';
-import { 
-  FileText, 
-  Users, 
-  Share2, 
-  Clock 
-} from 'lucide-react';
+} from "@chakra-ui/react";
+import { FileText, Users, Share2, Clock } from "lucide-react";
 
 interface StatCardProps {
   title: string;
@@ -35,17 +30,11 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ title, stat, icon, helpText }) => {
-  const bgColor = useColorModeValue('white', 'gray.700');
-  const textColor = useColorModeValue('gray.600', 'gray.400');
-  
+  const bgColor = useColorModeValue("white", "gray.700");
+  const textColor = useColorModeValue("gray.600", "gray.400");
+
   return (
-    <Stat
-      px={4}
-      py={5}
-      bg={bgColor}
-      rounded="lg"
-      boxShadow="md"
-    >
+    <Stat px={4} py={5} bg={bgColor} rounded="lg" boxShadow="md">
       <Flex justifyContent="space-between">
         <Box>
           <StatLabel fontWeight="medium" isTruncated>
@@ -55,16 +44,10 @@ const StatCard: React.FC<StatCardProps> = ({ title, stat, icon, helpText }) => {
             {stat}
           </StatNumber>
           {helpText && (
-            <StatHelpText color={textColor}>
-              {helpText}
-            </StatHelpText>
+            <StatHelpText color={textColor}>{helpText}</StatHelpText>
           )}
         </Box>
-        <Box
-          my="auto"
-          color="blue.500"
-          alignContent="center"
-        >
+        <Box my="auto" color="blue.500" alignContent="center">
           <Icon as={icon} w={8} h={8} />
         </Box>
       </Flex>
@@ -73,27 +56,53 @@ const StatCard: React.FC<StatCardProps> = ({ title, stat, icon, helpText }) => {
 };
 
 const TeacherDashboard: React.FC = () => {
-  const bgColor = useColorModeValue('white', 'gray.700');
-  
+  const bgColor = useColorModeValue("white", "gray.700");
+
   // Mock data for recent essays
   const recentEssays = [
-    { id: 1, student: 'Alice Johnson', title: 'The Impact of Climate Change', score: 85, submitted: '2 hours ago' },
-    { id: 2, student: 'Bob Smith', title: 'Analysis of Hamlet', score: 92, submitted: '1 day ago' },
-    { id: 3, student: 'Carol Williams', title: 'Modern Economic Theories', score: 78, submitted: '2 days ago' },
-    { id: 4, student: 'David Brown', title: 'The French Revolution', score: 88, submitted: '3 days ago' },
+    {
+      id: 1,
+      student: "Alice Johnson",
+      title: "The Impact of Climate Change",
+      score: 85,
+      submitted: "2 hours ago",
+    },
+    {
+      id: 2,
+      student: "Bob Smith",
+      title: "Analysis of Hamlet",
+      score: 92,
+      submitted: "1 day ago",
+    },
+    {
+      id: 3,
+      student: "Carol Williams",
+      title: "Modern Economic Theories",
+      score: 78,
+      submitted: "2 days ago",
+    },
+    {
+      id: 4,
+      student: "David Brown",
+      title: "The French Revolution",
+      score: 88,
+      submitted: "3 days ago",
+    },
   ];
-  
+
   // Mock data for courses
   const courses = [
-    { id: 1, name: 'English Literature 101', students: 28, progress: 65 },
-    { id: 2, name: 'World History', students: 32, progress: 42 },
-    { id: 3, name: 'Economics Fundamentals', students: 24, progress: 78 },
+    { id: 1, name: "English Literature 101", students: 28, progress: 65 },
+    { id: 2, name: "World History", students: 32, progress: 42 },
+    { id: 3, name: "Economics Fundamentals", students: 24, progress: 78 },
   ];
-  
+
   return (
     <Box>
-      <Heading size="lg" mb={6}>Teacher Dashboard</Heading>
-      
+      <Heading size="lg" mb={6}>
+        Teacher Dashboard
+      </Heading>
+
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={6} mb={8}>
         <StatCard
           title="Essays to Grade"
@@ -120,10 +129,12 @@ const TeacherDashboard: React.FC = () => {
           helpText="Next: Tomorrow at 11:59 PM"
         />
       </SimpleGrid>
-      
+
       <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={8}>
         <Box bg={bgColor} p={6} rounded="lg" boxShadow="md">
-          <Heading size="md" mb={4}>Recent Essays</Heading>
+          <Heading size="md" mb={4}>
+            Recent Essays
+          </Heading>
           <Box overflowX="auto">
             <Table variant="simple" size="sm">
               <Thead>
@@ -155,9 +166,11 @@ const TeacherDashboard: React.FC = () => {
             </Table>
           </Box>
         </Box>
-        
+
         <Box bg={bgColor} p={6} rounded="lg" boxShadow="md">
-          <Heading size="md" mb={4}>Your Courses</Heading>
+          <Heading size="md" mb={4}>
+            Your Courses
+          </Heading>
           <Box overflowX="auto">
             <Table variant="simple" size="sm">
               <Thead>

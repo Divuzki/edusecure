@@ -10,7 +10,7 @@ interface EssayState {
 }
 
 interface EssayStore extends EssayState {
-  submitEssay: (essay: any) => Promise<void>;
+  submitEssay: (essay: Omit<Essay, 'id' | 'submittedAt'>) => Promise<void>;
   getStudentEssays: (studentId: string) => Promise<void>;
   getTeacherEssays: () => Promise<void>;
   gradeEssay: (essayId: string, score: EssayScore) => Promise<void>;
