@@ -42,7 +42,7 @@ interface FileContextType {
 const FileContext = createContext<FileContextType | undefined>(undefined);
 
 export function FileProvider({ children }: { children: React.ReactNode }) {
-  const { user, userRole, getAuthHeaders } = useAuth();
+  const { user, userRole } = useAuth();
   const [files, setFiles] = useState<File[]>([]);
   const [shareLinks, setShareLinks] = useState<ShareLink[]>([]);
   const [uploadProgress, setUploadProgress] = useState<number>(0);

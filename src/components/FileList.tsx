@@ -7,7 +7,7 @@ import ShareLinkModal from './ShareLinkModal';
 const FileList: React.FC = () => {
   const { files, fetchFiles, deleteFile, createShareLink } = useFiles();
   const { user } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [shareLink, setShareLink] = useState('');
 

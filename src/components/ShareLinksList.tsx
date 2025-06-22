@@ -4,7 +4,7 @@ import { Copy, Check, X, RefreshCw } from 'lucide-react';
 
 const ShareLinksList: React.FC = () => {
   const { shareLinks, fetchShareLinks, revokeShareLink } = useFiles();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const handleRefresh = async () => {
