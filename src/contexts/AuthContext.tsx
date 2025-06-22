@@ -40,17 +40,62 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setAccessToken(currentSession?.access_token || null);
 
       if (currentSession?.user) {
-        // Fetch user role from profiles table
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("role")
-          .eq("id", currentSession.user.id)
-          .single();
+        try {
+          // Fetch user role from profiles table
+          console.log("Fetching role for user ID:", currentSession.user.id);
+          
+          // Add timeout to prevent hanging
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Query timeout')), 10000)
+          );
+          
+          const queryPromise = supabase
+            .from("profiles")
+            .select("role")
+            .eq("id", currentSession.user.id)
+            .single();
+          
+          const { data, error } = await Promise.race([queryPromise, timeoutPromise]) as { data: { role: string } | null; error: unknown | null; };
+          
+          console.log("Query completed. Data:", data, "Error:", error);
 
-        if (error) {
-          console.error("Error fetching user role:", error);
-        } else if (data) {
-          setUserRole(data.role as Role);
+          if (error) {
+            console.error("Error fetching user role:", error);
+            console.error("Error details:", error.message, error.code);
+            // Set a default role if profile doesn't exist
+            if (error.code === 'PGRST116') {
+              console.log("Profile not found, creating default profile");
+              const { error: insertError } = await supabase
+                .from("profiles")
+                .insert({
+                  id: currentSession.user.id,
+                  email: currentSession.user.email,
+                  role: "student",
+                  created_at: new Date().toISOString(),
+                });
+              
+              if (insertError) {
+                console.error("Error creating profile:", insertError);
+              } else {
+                console.log("Profile created successfully, setting role to student");
+                setUserRole("student");
+              }
+            } else {
+              // For other errors, set a default role
+              console.log("Setting default role due to error");
+              setUserRole("student");
+            }
+          } else if (data) {
+            console.log("User role fetched:", data.role);
+            setUserRole(data.role as Role);
+          } else {
+            console.log("No data returned from profiles query, setting default role");
+            setUserRole("student");
+          }
+        } catch (catchError) {
+          console.error("Caught error in role fetching:", catchError);
+          console.log("Setting default role due to catch error");
+          setUserRole("student");
         }
       } else {
         setUserRole(null);
@@ -67,19 +112,68 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setAccessToken(initialSession?.access_token || null);
 
       if (initialSession?.user) {
-        supabase
-          .from("profiles")
-          .select("role")
-          .eq("id", initialSession.user.id)
-          .single()
-          .then(({ data, error }) => {
+        console.log("Initial session - Fetching role for user ID:", initialSession.user.id);
+        
+        const fetchInitialRole = async () => {
+          try {
+            // Add timeout to prevent hanging
+            const timeoutPromise = new Promise((_, reject) => 
+              setTimeout(() => reject(new Error('Initial query timeout')), 10000)
+            );
+            
+            const queryPromise = supabase
+              .from("profiles")
+              .select("role")
+              .eq("id", initialSession.user.id)
+              .single();
+            
+            const { data, error } = await Promise.race([queryPromise, timeoutPromise]) as { data: { role: string } | null; error: unknown | null; };
+            
+            console.log("Initial session - Query completed. Data:", data, "Error:", error);
+            
             if (error) {
-              console.error("Error fetching user role:", error);
+              console.error("Initial session - Error fetching user role:", error);
+              console.error("Initial session - Error details:", error.message, error.code);
+              // Set a default role if profile doesn't exist
+              if (error.code === 'PGRST116') {
+                console.log("Initial session - Profile not found, creating default profile");
+                const { error: insertError } = await supabase
+                  .from("profiles")
+                  .insert({
+                    id: initialSession.user.id,
+                    email: initialSession.user.email,
+                    role: "student",
+                    created_at: new Date().toISOString(),
+                  });
+                
+                if (insertError) {
+                  console.error("Initial session - Error creating profile:", insertError);
+                } else {
+                  console.log("Initial session - Profile created successfully, setting role to student");
+                  setUserRole("student");
+                }
+              } else {
+                // For other errors, set a default role
+                console.log("Initial session - Setting default role due to error");
+                setUserRole("student");
+              }
             } else if (data) {
+              console.log("Initial session - User role fetched:", data.role);
               setUserRole(data.role as Role);
+            } else {
+              console.log("Initial session - No data returned from profiles query, setting default role");
+              setUserRole("student");
             }
+          } catch (catchError) {
+            console.error("Initial session - Caught error in role fetching:", catchError);
+            console.log("Initial session - Setting default role due to catch error");
+            setUserRole("student");
+          } finally {
             setLoading(false);
-          });
+          }
+        };
+        
+        fetchInitialRole();
       } else {
         setLoading(false);
       }
@@ -117,8 +211,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         "Registration successful! Please check your email for verification."
       );
       return token;
-    } catch (error: any) {
-      toast.error(error.message || "An error occurred during sign up");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "An error occurred during sign up";
+      toast.error(errorMessage);
       throw error;
     }
   };
@@ -138,8 +233,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       toast.success("Welcome back!");
       return token;
-    } catch (error: any) {
-      toast.error(error.message || "An error occurred during sign in");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "An error occurred during sign in";
+      toast.error(errorMessage);
       throw error;
     }
   };
@@ -153,8 +249,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setAccessToken(null);
 
       toast.success("Signed out successfully");
-    } catch (error: any) {
-      toast.error(error.message || "An error occurred during sign out");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "An error occurred during sign out";
+      toast.error(errorMessage);
       throw error;
     }
   };

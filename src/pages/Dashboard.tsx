@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import FileUpload from '../components/FileUpload';
 import FileList from '../components/FileList';
 import ShareLinksList from '../components/ShareLinksList';
-import { Table as Tabs, Database, Share } from 'lucide-react';
+import { Database, Share } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
   const { userRole } = useAuth();

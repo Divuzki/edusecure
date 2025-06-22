@@ -20,6 +20,10 @@ interface ShareLink {
   url: string;
   expires_at: string;
   created_at: string;
+  files?: {
+    name: string;
+    owner_id: string;
+  };
 }
 
 interface FileContextType {
@@ -48,9 +52,6 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
     if (!user) return;
 
     try {
-      // Get authentication headers
-      const headers = getAuthHeaders();
-
       let query = supabase.from("files").select("*");
 
       // Apply role-based filtering
@@ -84,35 +85,53 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
       );
 
       setFiles(filesWithUrls);
-    } catch (error: any) {
-      toast.error(error.message || "Error fetching files");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Error fetching files";
+      toast.error(errorMessage);
     }
   };
 
   const fetchShareLinks = async () => {
-    if (!user) return;
+    if (!user) {
+      console.log("No user found, skipping share links fetch");
+      return;
+    }
 
     try {
-      // Get authentication headers
-      const headers = getAuthHeaders();
-
+      console.log("Fetching share links for user:", user.id);
+      
       // Only fetch share links for files the user owns
       const { data, error } = await supabase
         .from("share_links")
-        .select("*, files(owner_id)")
+        .select("*, files(name, owner_id)")
         .eq("files.owner_id", user.id)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      console.log("Share links query result:", { data, error });
+
+      if (error) {
+        console.error("Error fetching share links:", error);
+        throw error;
+      }
+
+      if (!data) {
+        console.log("No share links data returned");
+        setShareLinks([]);
+        return;
+      }
 
       // Filter out expired links
       const validLinks = data.filter(
         (link) => new Date(link.expires_at) > new Date()
       );
 
+      console.log("Valid share links:", validLinks);
       setShareLinks(validLinks);
-    } catch (error: any) {
-      toast.error(error.message || "Error fetching share links");
+    } catch (error: unknown) {
+      console.error("Caught error in fetchShareLinks:", error);
+      const errorMessage = error instanceof Error ? error.message : "Error fetching share links";
+      toast.error(errorMessage);
+      setShareLinks([]); // Set empty array on error
     }
   };
 
@@ -129,11 +148,7 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
     setUploadProgress(0);
 
     try {
-      // Get authentication headers
-      const headers = getAuthHeaders();
-
       // Create a unique path for the file
-      const fileExt = fileName.split(".").pop();
       const filePath = `${user.id}/${Date.now()}-${fileName}`;
 
       // Upload the file to Supabase Storage
@@ -142,12 +157,6 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
         .upload(filePath, file, {
           cacheControl: "3600",
           upsert: false,
-          onUploadProgress: (progress) => {
-            const progressPercent = Math.round(
-              (progress.loaded / progress.total) * 100
-            );
-            setUploadProgress(progressPercent);
-          },
         });
 
       if (uploadError) throw uploadError;
@@ -166,8 +175,9 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
 
       toast.success("File uploaded successfully");
       fetchFiles(); // Refresh the file list
-    } catch (error: any) {
-      toast.error(error.message || "Error uploading file");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Error uploading file";
+      toast.error(errorMessage);
     } finally {
       setIsUploading(false);
       setUploadProgress(0);
@@ -176,9 +186,6 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
 
   const deleteFile = async (fileId: string, filePath: string) => {
     try {
-      // Get authentication headers
-      const headers = getAuthHeaders();
-
       // Delete from storage first
       const { error: storageError } = await supabase.storage
         .from("files")
@@ -202,16 +209,14 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
       // Update local state
       setFiles(files.filter((file) => file.id !== fileId));
       setShareLinks(shareLinks.filter((link) => link.file_id !== fileId));
-    } catch (error: any) {
-      toast.error(error.message || "Error deleting file");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Error deleting file";
+      toast.error(errorMessage);
     }
   };
 
   const createShareLink = async (fileId: string, expiryDays: number = 7) => {
     try {
-      // Get authentication headers
-      const headers = getAuthHeaders();
-
       // Get the file to share
       const file = files.find((f) => f.id === fileId);
       if (!file) throw new Error("File not found");
@@ -240,17 +245,15 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
       fetchShareLinks(); // Refresh the share links list
 
       return data?.signedUrl || "";
-    } catch (error: any) {
-      toast.error(error.message || "Error creating share link");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Error creating share link";
+      toast.error(errorMessage);
       return "";
     }
   };
 
   const revokeShareLink = async (linkId: string) => {
     try {
-      // Get authentication headers
-      const headers = getAuthHeaders();
-
       const { error } = await supabase
         .from("share_links")
         .delete()
@@ -262,8 +265,9 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
 
       // Update local state
       setShareLinks(shareLinks.filter((link) => link.id !== linkId));
-    } catch (error: any) {
-      toast.error(error.message || "Error revoking share link");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Error revoking share link";
+      toast.error(errorMessage);
     }
   };
 

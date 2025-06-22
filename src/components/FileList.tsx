@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFiles } from '../contexts/FileContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Download, Share2, Trash2, File as FileIcon, FileText, FileImage, Film, Music, Archive, FileQuestion } from 'lucide-react';
@@ -9,7 +9,6 @@ const FileList: React.FC = () => {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [shareModalOpen, setShareModalOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [shareLink, setShareLink] = useState('');
 
   useEffect(() => {
@@ -52,7 +51,6 @@ const FileList: React.FC = () => {
   };
 
   const handleShare = async (fileId: string) => {
-    setSelectedFile(fileId);
     const link = await createShareLink(fileId, 7); // 7 days expiration
     setShareLink(link);
     setShareModalOpen(true);
