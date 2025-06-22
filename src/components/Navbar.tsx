@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
               <HardDrive size={24} className="text-blue-600" />
               <span className="ml-2 text-xl font-bold text-gray-800">EduVault</span>
             </Link>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+            <div className="hidden sm:ml-6 sbm:flex sm:space-x-8">
               <Link
                 to="/dashboard"
                 className={`inline-flex items-center px-1 pt-1 border-b-2 ${
@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
           
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             <div className="flex items-center">
-              <span className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded capitalize">
+              <span className="bg-blue-100 hidden text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded capitalize">
                 {userRole}
               </span>
               <span className="text-sm text-gray-700 mr-4">{user.email}</span>
@@ -89,7 +89,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile menu, show/hide based on menu state */}
       {mobileMenuOpen && (
-        <div className="sm:hidden">
+        <div className="sbm:hidden hidden">
           <div className="pt-2 pb-3 space-y-1 animate-fade-in">
             <Link
               to="/dashboard"
@@ -126,7 +126,7 @@ const Navbar: React.FC = () => {
               </div>
               <div className="ml-3">
                 <div className="text-base font-medium text-gray-800">{user.email}</div>
-                <div className="text-sm font-medium text-gray-500 capitalize">{userRole}</div>
+                <div className="text-sm font-medium text-gray-500 capitalize hidden">{userRole}</div>
               </div>
             </div>
             <div className="mt-3 space-y-1">

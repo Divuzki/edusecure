@@ -44,7 +44,7 @@ const Login: React.FC = () => {
           Sign in to EduVault
         </h2>
         <p className="mt-2 text-sm text-gray-600">
-          Secure cloud storage for educational institutions
+          Secure cloud storage
         </p>
       </div>
 

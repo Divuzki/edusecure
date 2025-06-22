@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFiles } from '../contexts/FileContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Download, Share2, Trash2, FileIcon, FileImage, Film, Music, FileText, Archive, FileQuestion, RefreshCw } from 'lucide-react';
@@ -16,6 +16,11 @@ const FileList: React.FC = () => {
     await fetchFiles();
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    handleRefresh()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Function to determine which icon to show based on file type
   const getFileIcon = (fileType: string) => {

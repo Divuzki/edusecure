@@ -52,7 +52,7 @@ const Register: React.FC = () => {
           Create your account
         </h2>
         <p className="mt-2 text-sm text-gray-600">
-          Join EduVault for secure educational file storage
+          Join EduVault for secure file storage
         </p>
       </div>
 
@@ -145,7 +145,7 @@ const Register: React.FC = () => {
               >
                 Role
               </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
+              <div className="mt-1 hidden relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <UserCircle className="h-5 w-5 text-gray-400" />
                 </div>

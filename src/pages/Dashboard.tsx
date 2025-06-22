@@ -11,7 +11,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="animate-fade-in">
-      <header className="mb-8">
+      <header className="mb-8 hidden">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Your Dashboard</h1>
         <p className="text-gray-600">
           {userRole === 'student' && "Manage your documents, assignments, and shared files."}

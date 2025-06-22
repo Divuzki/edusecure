@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useFiles } from '../contexts/FileContext';
-import { Copy, Check, X, RefreshCw } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { useFiles } from "../contexts/FileContext";
+import { Copy, Check, X, RefreshCw } from "lucide-react";
 
 const ShareLinksList: React.FC = () => {
   const { shareLinks, fetchShareLinks, revokeShareLink } = useFiles();
@@ -13,6 +13,11 @@ const ShareLinksList: React.FC = () => {
     setIsLoading(false);
   };
 
+  useEffect(() => {
+    handleRefresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const copyToClipboard = (id: string, url: string) => {
     navigator.clipboard.writeText(url);
     setCopiedId(id);
@@ -21,13 +26,13 @@ const ShareLinksList: React.FC = () => {
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
+    return date.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
     });
   };
-  
+
   const calculateDaysLeft = (expiresAt: string): number => {
     const expiryDate = new Date(expiresAt);
     const today = new Date();
@@ -51,13 +56,17 @@ const ShareLinksList: React.FC = () => {
     return (
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-          <h3 className="text-lg font-medium text-gray-800">Active Share Links</h3>
+          <h3 className="text-lg font-medium text-gray-800">
+            Active Share Links
+          </h3>
           <button
             onClick={handleRefresh}
             disabled={isLoading}
             className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
           >
-            <RefreshCw className={`h-3.5 w-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+            <RefreshCw
+              className={`h-3.5 w-3.5 ${isLoading ? "animate-spin" : ""}`}
+            />
             Refresh
           </button>
         </div>
@@ -71,31 +80,42 @@ const ShareLinksList: React.FC = () => {
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 className="text-lg font-medium text-gray-800">Active Share Links</h3>
+        <h3 className="text-lg font-medium text-gray-800">
+          Active Share Links
+        </h3>
         <button
           onClick={handleRefresh}
           disabled={isLoading}
           className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
         >
-          <RefreshCw className={`h-3.5 w-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+          <RefreshCw
+            className={`h-3.5 w-3.5 ${isLoading ? "animate-spin" : ""}`}
+          />
           Refresh
         </button>
       </div>
       <ul className="divide-y divide-gray-200">
         {shareLinks.map((link) => (
-          <li key={link.id} className="p-4 hover:bg-gray-50 transition-colors duration-200">
+          <li
+            key={link.id}
+            className="p-4 hover:bg-gray-50 transition-colors duration-200"
+          >
             <div className="flex justify-between items-center">
               <div>
                 <p className="text-sm font-medium text-gray-800 truncate">
-                  {link.files?.name || 'File'}
+                  {link.files?.name || "File"}
                 </p>
                 <div className="flex items-center mt-1">
                   <span className="text-xs text-gray-500 mr-3">
                     Created: {formatDate(link.created_at)}
                   </span>
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${
-                    calculateDaysLeft(link.expires_at) <= 1 ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
-                  }`}>
+                  <span
+                    className={`text-xs px-2 py-0.5 rounded-full ${
+                      calculateDaysLeft(link.expires_at) <= 1
+                        ? "bg-red-100 text-red-800"
+                        : "bg-green-100 text-green-800"
+                    }`}
+                  >
                     Expires in {calculateDaysLeft(link.expires_at)} days
                   </span>
                 </div>
@@ -106,10 +126,11 @@ const ShareLinksList: React.FC = () => {
                   className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors duration-200"
                   title="Copy link"
                 >
-                  {copiedId === link.id ? 
-                    <Check size={18} className="text-green-600" /> : 
+                  {copiedId === link.id ? (
+                    <Check size={18} className="text-green-600" />
+                  ) : (
                     <Copy size={18} />
-                  }
+                  )}
                 </button>
                 <button
                   onClick={() => revokeShareLink(link.id)}
