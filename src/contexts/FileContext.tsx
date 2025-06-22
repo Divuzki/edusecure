@@ -42,7 +42,7 @@ interface FileContextType {
 const FileContext = createContext<FileContextType | undefined>(undefined);
 
 export function FileProvider({ children }: { children: React.ReactNode }) {
-  const { user, userRole } = useAuth();
+  const { user } = useAuth();
   const [files, setFiles] = useState<File[]>([]);
   const [shareLinks, setShareLinks] = useState<ShareLink[]>([]);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -52,22 +52,12 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
     if (!user) return;
 
     try {
-      let query = supabase.from("files").select("*");
-
-      // Apply role-based filtering
-      if (userRole === "student") {
-        // Students can only see their own files
-        query = query.eq("owner_id", user.id);
-      } else if (userRole === "teacher") {
-        // Teachers can see their files and files from their students
-        // This is a simplified approach - in a real app, you'd join with a classes/enrollments table
-        query = query.or(`owner_id.eq.${user.id},owner_role.eq.student`);
-      }
-      // Admins can see all files, so no additional filtering needed
-
-      const { data, error } = await query.order("created_at", {
-        ascending: false,
-      });
+      // Users can only see their own files
+      const { data, error } = await supabase
+        .from("files")
+        .select("*")
+        .eq("owner_id", user.id)
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
 
@@ -168,7 +158,6 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
         type: file.type,
         path: filePath,
         owner_id: user.id,
-        owner_role: userRole,
       });
 
       if (dbError) throw dbError;

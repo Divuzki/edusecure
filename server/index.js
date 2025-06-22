@@ -47,19 +47,6 @@ const authMiddleware = async (req, res, next) => {
     
     req.user = data.user;
     
-    // Get user role
-    const { data: profileData, error: profileError } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', data.user.id)
-      .single();
-      
-    if (profileError) {
-      throw profileError;
-    }
-    
-    req.userRole = profileData.role;
-    
     next();
   } catch (err) {
     console.error('Auth error:', err.message);
@@ -76,10 +63,10 @@ app.get('/api/health', (req, res) => {
 
 // Authentication routes
 app.post('/api/auth/register', async (req, res) => {
-  const { email, password, role } = req.body;
+  const { email, password } = req.body;
   
-  if (!email || !password || !role) {
-    return res.status(400).json({ error: 'Email, password, and role are required' });
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password are required' });
   }
   
   try {
@@ -90,17 +77,7 @@ app.post('/api/auth/register', async (req, res) => {
     
     if (error) throw error;
     
-    if (data.user) {
-      // Create a profile with the role
-      const { error: profileError } = await supabase.from('profiles').insert({
-        id: data.user.id,
-        email: email,
-        role: role,
-        created_at: new Date().toISOString(),
-      });
-      
-      if (profileError) throw profileError;
-    }
+
     
     res.status(201).json({ message: 'Registration successful' });
   } catch (err) {
@@ -137,19 +114,12 @@ app.post('/api/auth/login', async (req, res) => {
 // File routes
 app.get('/api/files', authMiddleware, async (req, res) => {
   try {
-    let query = supabase.from('files').select('*');
-    
-    // Apply role-based filtering
-    if (req.userRole === 'student') {
-      // Students can only see their own files
-      query = query.eq('owner_id', req.user.id);
-    } else if (req.userRole === 'teacher') {
-      // Teachers can see their files and files from students
-      query = query.or(`owner_id.eq.${req.user.id},owner_role.eq.student`);
-    }
-    // Admins can see all files, so no additional filtering needed
-    
-    const { data, error } = await query.order('created_at', { ascending: false });
+    // Users can only see their own files
+    const { data, error } = await supabase
+      .from('files')
+      .select('*')
+      .eq('owner_id', req.user.id)
+      .order('created_at', { ascending: false });
     
     if (error) throw error;
     
@@ -201,8 +171,7 @@ app.post('/api/files/upload', authMiddleware, upload.single('file'), async (req,
       size: file.size,
       type: file.mimetype,
       path: filePath,
-      owner_id: req.user.id,
-      owner_role: req.userRole
+      owner_id: req.user.id
     }).select();
     
     if (dbError) throw dbError;
@@ -236,7 +205,7 @@ app.delete('/api/files/:id', authMiddleware, async (req, res) => {
     if (fetchError) throw fetchError;
     
     // Check if user owns the file
-    if (file.owner_id !== req.user.id && req.userRole !== 'admin') {
+    if (file.owner_id !== req.user.id) {
       return res.status(403).json({ error: 'You do not have permission to delete this file' });
     }
     
@@ -347,7 +316,7 @@ app.delete('/api/files/share/:id', authMiddleware, async (req, res) => {
     
     if (linkError) throw linkError;
     
-    if (link.owner_id !== req.user.id && req.userRole !== 'admin') {
+    if (link.owner_id !== req.user.id) {
       return res.status(403).json({ error: 'You do not have permission to revoke this share link' });
     }
     

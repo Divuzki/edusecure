@@ -6,17 +6,14 @@ import ShareLinksList from '../components/ShareLinksList';
 import { Database, Share } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
-  const { userRole } = useAuth();
   const [activeTab, setActiveTab] = useState('files');
 
   return (
     <div className="animate-fade-in">
       <header className="mb-8 hidden">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Your Dashboard</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">Your Files</h1>
         <p className="text-gray-600">
-          {userRole === 'student' && "Manage your documents, assignments, and shared files."}
-          {userRole === 'teacher' && "Manage your teaching materials and student submissions."}
-          {userRole === 'admin' && "Access and manage all files in the system."}
+          Upload, manage, and share your files securely.
         </p>
       </header>
 

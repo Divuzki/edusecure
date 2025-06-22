@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { LogOut, Menu, X, HardDrive, Shield } from 'lucide-react';
 
 const Navbar: React.FC = () => {
-  const { user, userRole, signOut } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
           <div className="flex">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <HardDrive size={24} className="text-blue-600" />
-              <span className="ml-2 text-xl font-bold text-gray-800">EduVault</span>
+              <span className="ml-2 text-xl font-bold text-gray-800">FileVault</span>
             </Link>
             <div className="hidden sm:ml-6 sbm:flex sm:space-x-8">
               <Link
@@ -37,27 +37,13 @@ const Navbar: React.FC = () => {
                 Dashboard
               </Link>
               
-              {userRole === 'admin' && (
-                <Link
-                  to="/admin"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 ${
-                    location.pathname === '/admin'
-                      ? 'border-blue-500 text-gray-900'
-                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                  } text-sm font-medium`}
-                >
-                  <Shield size={16} className="mr-1" />
-                  Admin
-                </Link>
-              )}
+
             </div>
           </div>
           
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             <div className="flex items-center">
-              <span className="bg-blue-100 hidden text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded capitalize">
-                {userRole}
-              </span>
+
               <span className="text-sm text-gray-700 mr-4">{user.email}</span>
               <button
                 onClick={handleSignOut}
@@ -103,19 +89,7 @@ const Navbar: React.FC = () => {
               Dashboard
             </Link>
             
-            {userRole === 'admin' && (
-              <Link
-                to="/admin"
-                className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                  location.pathname === '/admin'
-                    ? 'bg-blue-50 border-blue-500 text-blue-700'
-                    : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800'
-                }`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Admin Panel
-              </Link>
-            )}
+
           </div>
           <div className="pt-4 pb-3 border-t border-gray-200">
             <div className="flex items-center px-4">
@@ -126,7 +100,7 @@ const Navbar: React.FC = () => {
               </div>
               <div className="ml-3">
                 <div className="text-base font-medium text-gray-800">{user.email}</div>
-                <div className="text-sm font-medium text-gray-500 capitalize hidden">{userRole}</div>
+
               </div>
             </div>
             <div className="mt-3 space-y-1">

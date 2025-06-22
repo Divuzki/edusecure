@@ -7,7 +7,7 @@ const Register: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState<"student" | "teacher" | "admin">("student");
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -26,7 +26,7 @@ const Register: React.FC = () => {
     setError("");
 
     try {
-      const token = await signUp(email, password, role);
+      const token = await signUp(email, password);
 
       // If we have a token, the user is automatically logged in
       // Otherwise, they need to verify their email first
@@ -52,7 +52,7 @@ const Register: React.FC = () => {
           Create your account
         </h2>
         <p className="mt-2 text-sm text-gray-600">
-          Join EduVault for secure file storage
+          Join FileVault for secure file storage
         </p>
       </div>
 
@@ -138,33 +138,7 @@ const Register: React.FC = () => {
               </div>
             </div>
 
-            <div className="hidden">
-              <label
-                htmlFor="role"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Role
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <UserCircle className="h-5 w-5 text-gray-400" />
-                </div>
-                <select
-                  id="role"
-                  name="role"
-                  required
-                  className="input pl-10"
-                  value={role}
-                  onChange={(e) =>
-                    setRole(e.target.value as "student" | "teacher" | "admin")
-                  }
-                >
-                  <option value="student">Student</option>
-                  <option value="teacher">Teacher</option>
-                  <option value="admin">Administrator</option>
-                </select>
-              </div>
-            </div>
+
 
             <div>
               <button

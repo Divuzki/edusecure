@@ -1,39 +1,40 @@
-# EduVault: Secure Cloud Storage for Educational Institutions
+# FileVault
 
-EduVault is a full-stack web application that provides secure cloud storage specifically designed for educational institutions. It allows students, teachers, and administrators to upload, store, and share files securely with role-based access control.
+FileVault is a simple and secure file storage web application that allows users to upload, store, and share files through secure sharing links. Perfect for personal use or small teams who need a straightforward file management solution.
 
 ## Features
 
 - **User Authentication**
-  - Registration with role selection (student, teacher, administrator)
-  - Secure login with JWT
+
+  - Simple registration and login
+  - Secure authentication with JWT
   - Email verification
 
-- **Role-Based Access Control**
-  - Students can only access their own files
-  - Teachers can access their files and student files
-  - Administrators have full access to all files
-
 - **File Management**
+
   - Upload files (up to 10MB) with drag-and-drop interface
   - Download files
   - Delete files
   - Progressive file upload with visual feedback
+  - Clean and intuitive file browser
 
 - **Secure File Sharing**
   - Generate time-limited secure sharing links (7-day expiration)
   - Manually revoke sharing links
-  - Track active sharing links
+  - Track and manage active sharing links
+  - Share files with anyone via secure URLs
 
 ## Tech Stack
 
 - **Frontend**
+
   - React.js with TypeScript
   - Tailwind CSS for styling
   - React Router for navigation
   - React Dropzone for file uploads
 
 - **Backend**
+
   - Node.js with Express
   - Supabase for authentication and storage
   - JWT for secure API authorization
@@ -112,7 +113,8 @@ Remember to set the environment variables on your hosting provider.
 ### Authentication
 
 - `POST /api/auth/register` - Register a new user
-  - Body: `{ email, password, role }`
+
+  - Body: `{ email, password }`
   - Returns: Success message
 
 - `POST /api/auth/login` - Authenticate a user
@@ -122,10 +124,12 @@ Remember to set the environment variables on your hosting provider.
 ### Files
 
 - `GET /api/files` - Get user's accessible files
+
   - Headers: `Authorization: Bearer <token>`
   - Returns: Array of file objects
 
 - `POST /api/files/upload` - Upload a file
+
   - Headers: `Authorization: Bearer <token>`
   - Body: FormData with `file` field
   - Returns: Uploaded file object
@@ -137,10 +141,12 @@ Remember to set the environment variables on your hosting provider.
 ### Share Links
 
 - `GET /api/files/share-links` - Get user's share links
+
   - Headers: `Authorization: Bearer <token>`
   - Returns: Array of share link objects
 
 - `POST /api/files/share` - Create a share link
+
   - Headers: `Authorization: Bearer <token>`
   - Body: `{ fileId, expiryDays }`
   - Returns: Created share link object

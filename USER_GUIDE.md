@@ -1,6 +1,6 @@
-# EduVault User Guide
+# FileVault User Guide
 
-Welcome to EduVault, your secure cloud storage solution for educational institutions. This guide will help you navigate the system based on your role.
+Welcome to FileVault, your secure cloud storage solution. This guide will help you navigate the system and manage your files securely.
 
 ## Getting Started
 
@@ -9,103 +9,135 @@ Welcome to EduVault, your secure cloud storage solution for educational institut
 1. Visit the registration page by clicking "Register" on the login screen
 2. Enter your email address
 3. Create a strong password
-4. Select your role:
-   - **Student**: For learners to store and submit assignments
-   - **Teacher**: For educators to manage teaching materials and access student submissions
-   - **Administrator**: For IT staff or school administrators who need full system access
-5. Click "Create account"
-6. Check your email for a verification link (if enabled)
+4. Click "Create account"
+5. Check your email for a verification link (if enabled)
 
 ### Login
 
 1. Visit the login page
 2. Enter your email address and password
 3. Click "Sign in"
-4. You'll be redirected to your role-specific dashboard
+4. You'll be redirected to your dashboard
 
-## For Students
+## Managing Your Files
 
-As a student, you can manage your own files in a secure environment.
+### Uploading Files
 
-### Managing Your Files
-
-1. **Uploading Files**
+1. **Drag and Drop**
    - Drag and drop files into the upload area
+   - Multiple files can be uploaded at once
+
+2. **File Selection**
    - Alternatively, click the upload area to select files from your device
    - File size limit: 10MB per file
    - Once selected, click the "Upload" button
 
-2. **Viewing Your Files**
-   - All your files are listed in the "My Files" tab
-   - You can see file name, type, size, and upload date
+3. **Upload Progress**
+   - Watch the progress bar during upload
+   - You'll receive a confirmation when upload is complete
 
-3. **Downloading Files**
-   - Click the download icon next to any file to save it to your device
+### Viewing Your Files
 
-4. **Deleting Files**
-   - Click the trash icon next to any file you want to remove
-   - Confirm deletion when prompted
+- All your files are listed in the "My Files" section
+- You can see:
+  - File name
+  - File type
+  - File size
+  - Upload date
+- Files are sorted by upload date (newest first)
 
-### Sharing Files
+### Downloading Files
 
-1. **Creating Share Links**
-   - Click the share icon next to any file
-   - A link will be generated that allows anyone to download the file
-   - The link will expire after 7 days for security
+- Click the download icon next to any file to save it to your device
+- Files are downloaded with their original names
 
-2. **Managing Share Links**
+### Deleting Files
+
+- Click the trash icon next to any file you want to remove
+- Confirm deletion when prompted
+- **Warning**: Deleted files cannot be recovered
+
+## Sharing Files
+
+### Creating Share Links
+
+1. Click the share icon next to any file
+2. A secure link will be generated that allows anyone to download the file
+3. The link will expire after 7 days for security
+4. Copy the link to share with others
+
+### Managing Share Links
+
+1. **Viewing Active Links**
    - Go to the "Shared Links" tab to view all your active share links
    - See when each link was created and when it will expire
-   - Copy links to clipboard by clicking the copy icon
+   - View which file each link is associated with
+
+2. **Copying Links**
+   - Click the copy icon next to any share link
+   - The link will be copied to your clipboard
 
 3. **Revoking Share Links**
    - To stop sharing a file before the expiration date, click the X icon next to the share link
    - The link will immediately become invalid
+   - Anyone trying to access the revoked link will receive an error
 
-## For Teachers
+## Security Features
 
-As a teacher, you have access to your own files plus files uploaded by students.
+### File Privacy
 
-### Managing Files
+- Only you can access your uploaded files
+- Files are stored securely in encrypted cloud storage
+- Share links are the only way to grant access to others
 
-- Follow the same steps as students for uploading, downloading, and sharing your own files
-- You'll also see files uploaded by students in your file list
+### Link Expiration
 
-### Viewing Student Files
+- All share links automatically expire after 7 days
+- This prevents unauthorized long-term access to your files
+- You can create new links anytime for the same file
 
-- Student files appear in your file list marked with the student's information
-- You can download these files but cannot delete them
-- This allows you to access assignments and submissions without modifying them
+### Account Security
 
-## For Administrators
+- Use a strong, unique password for your account
+- Log out when using shared computers
+- Monitor your shared links regularly
 
-As an administrator, you have full access to the system.
+## Tips and Best Practices
 
-### User Management
+### File Organization
 
-1. **Viewing Users**
-   - Go to the "Admin" section
-   - See a list of all users in the system including their role and registration date
+- Use descriptive file names for easy identification
+- Consider the 10MB file size limit when uploading
+- Regularly review and delete files you no longer need
 
-2. **Managing Users**
-   - Delete users if necessary (this will also remove all their files)
+### Sharing Safely
 
-### System Statistics
+- Only share links with trusted individuals
+- Revoke links when they're no longer needed
+- Be mindful of sensitive information in shared files
 
-- View total number of users
-- See storage statistics including total files and storage used
-- Monitor file type distribution
+### Storage Management
 
-### File Management
+- Monitor your uploaded files to avoid clutter
+- Delete old or unnecessary files to free up space
+- Use appropriate file formats for your needs
 
-- Access all files in the system
-- Delete files if necessary
-- Monitor and manage file sharing
+## Troubleshooting
 
-## Tips for All Users
+### Upload Issues
 
-- **File Organization**: Name your files clearly to make them easy to identify
-- **Security**: Never share your login credentials with others
-- **Sharing Links**: Remember that anyone with a share link can access the file
-- **Large Files**: Break down large files into smaller parts to stay within the 10MB limit
-- **File Types**: The system accepts most common file types including documents, images, PDFs, and presentations
+- **File too large**: Ensure files are under 10MB
+- **Upload fails**: Check your internet connection and try again
+- **Slow upload**: Large files may take time depending on your connection
+
+### Access Issues
+
+- **Can't log in**: Verify your email and password are correct
+- **Files not loading**: Refresh the page or check your internet connection
+- **Share link not working**: Check if the link has expired or been revoked
+
+### Getting Help
+
+- Contact your system administrator for technical support
+- Report any bugs or issues through the appropriate channels
+- Keep your browser updated for the best experience
