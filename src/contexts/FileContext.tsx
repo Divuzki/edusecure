@@ -237,6 +237,7 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
         file_id: fileId,
         url: data?.signedUrl || "",
         expires_at: expiresAt.toISOString(),
+        owner_id: user?.id,
       });
 
       if (dbError) throw dbError;
