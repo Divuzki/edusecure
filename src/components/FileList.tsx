@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useFiles } from '../contexts/FileContext';
 import { useAuth } from '../contexts/AuthContext';
-import { Download, Share2, Trash2, File as FileIcon, FileText, FileImage, Film, Music, Archive, FileQuestion } from 'lucide-react';
+import { Download, Share2, Trash2, FileIcon, FileImage, Film, Music, FileText, Archive, FileQuestion, RefreshCw } from 'lucide-react';
 import ShareLinkModal from './ShareLinkModal';
 
 const FileList: React.FC = () => {
@@ -11,15 +11,11 @@ const FileList: React.FC = () => {
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [shareLink, setShareLink] = useState('');
 
-  useEffect(() => {
-    const loadFiles = async () => {
-      setIsLoading(true);
-      await fetchFiles();
-      setIsLoading(false);
-    };
-    
-    loadFiles();
-  }, [fetchFiles]);
+  const handleRefresh = async () => {
+    setIsLoading(true);
+    await fetchFiles();
+    setIsLoading(false);
+  };
 
   // Function to determine which icon to show based on file type
   const getFileIcon = (fileType: string) => {
@@ -77,18 +73,42 @@ const FileList: React.FC = () => {
 
   if (files.length === 0) {
     return (
-      <div className="text-center py-12">
-        <div className="flex justify-center mb-4">
-          <FileQuestion size={64} className="text-gray-400" />
+      <>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold text-gray-800">My Files</h2>
+          <button
+            onClick={handleRefresh}
+            disabled={isLoading}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </button>
         </div>
-        <h3 className="text-lg font-medium text-gray-700 mb-1">No files found</h3>
-        <p className="text-gray-500">Upload files to see them here</p>
-      </div>
+        <div className="text-center py-12">
+          <div className="flex justify-center mb-4">
+            <FileQuestion size={64} className="text-gray-400" />
+          </div>
+          <h3 className="text-lg font-medium text-gray-700 mb-1">No files found</h3>
+          <p className="text-gray-500">Upload files to see them here</p>
+        </div>
+      </>
     );
   }
 
   return (
     <>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold text-gray-800">My Files</h2>
+        <button
+          onClick={handleRefresh}
+          disabled={isLoading}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+          Refresh
+        </button>
+      </div>
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">

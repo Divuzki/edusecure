@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useFiles } from '../contexts/FileContext';
-import { Copy, X, Check } from 'lucide-react';
+import { Copy, Check, X, RefreshCw } from 'lucide-react';
 
 const ShareLinksList: React.FC = () => {
   const { shareLinks, fetchShareLinks, revokeShareLink } = useFiles();
   const [isLoading, setIsLoading] = useState(true);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadShareLinks = async () => {
-      setIsLoading(true);
-      await fetchShareLinks();
-      setIsLoading(false);
-    };
-    
-    loadShareLinks();
-  }, [fetchShareLinks]);
+  const handleRefresh = async () => {
+    setIsLoading(true);
+    await fetchShareLinks();
+    setIsLoading(false);
+  };
 
   const copyToClipboard = (id: string, url: string) => {
     navigator.clipboard.writeText(url);
@@ -53,16 +49,37 @@ const ShareLinksList: React.FC = () => {
 
   if (shareLinks.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow p-6 text-center">
-        <p className="text-gray-500">You haven't shared any files yet</p>
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+          <h3 className="text-lg font-medium text-gray-800">Active Share Links</h3>
+          <button
+            onClick={handleRefresh}
+            disabled={isLoading}
+            className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
+          >
+            <RefreshCw className={`h-3.5 w-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </button>
+        </div>
+        <div className="p-6 text-center">
+          <p className="text-gray-500">You haven't shared any files yet</p>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
-      <div className="p-4 border-b border-gray-200">
+      <div className="p-4 border-b border-gray-200 flex justify-between items-center">
         <h3 className="text-lg font-medium text-gray-800">Active Share Links</h3>
+        <button
+          onClick={handleRefresh}
+          disabled={isLoading}
+          className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
+        >
+          <RefreshCw className={`h-3.5 w-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+          Refresh
+        </button>
       </div>
       <ul className="divide-y divide-gray-200">
         {shareLinks.map((link) => (
