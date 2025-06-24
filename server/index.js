@@ -77,7 +77,22 @@ app.post('/api/auth/register', async (req, res) => {
     
     if (error) throw error;
     
-
+    // Create profile for the new user if registration was successful
+    if (data.user) {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert({
+          id: data.user.id,
+          email: data.user.email,
+          role: null // Role is optional in simplified schema
+        });
+      
+      if (profileError) {
+        console.error('Profile creation error:', profileError.message);
+        // Don't fail registration if profile creation fails
+        // The profile can be created later if needed
+      }
+    }
     
     res.status(201).json({ message: 'Registration successful' });
   } catch (err) {
@@ -150,6 +165,29 @@ app.post('/api/files/upload', authMiddleware, upload.single('file'), async (req,
   }
   
   try {
+    // Ensure user profile exists (fallback for existing users)
+    const { data: existingProfile } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', req.user.id)
+      .single();
+    
+    if (!existingProfile) {
+      // Create profile if it doesn't exist
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert({
+          id: req.user.id,
+          email: req.user.email,
+          role: null
+        });
+      
+      if (profileError) {
+        console.error('Profile creation error:', profileError.message);
+        return res.status(500).json({ error: 'Failed to create user profile' });
+      }
+    }
+    
     const file = req.file;
     const fileExt = file.originalname.split('.').pop();
     const fileName = file.originalname;
