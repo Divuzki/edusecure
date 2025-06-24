@@ -138,8 +138,14 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
     setUploadProgress(0);
 
     try {
+      // Sanitize filename by removing/replacing invalid characters
+      const sanitizedFileName = fileName
+        .replace(/[^a-zA-Z0-9.-]/g, '_') // Replace invalid chars with underscore
+        .replace(/_{2,}/g, '_') // Replace multiple underscores with single
+        .replace(/^_|_$/g, ''); // Remove leading/trailing underscores
+      
       // Create a unique path for the file
-      const filePath = `${user.id}/${Date.now()}-${fileName}`;
+      const filePath = `${user.id}/${Date.now()}-${sanitizedFileName}`;
 
       // Simulate upload progress since Supabase doesn't support onUploadProgress
       const progressInterval = setInterval(() => {
