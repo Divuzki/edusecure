@@ -166,25 +166,34 @@ app.post('/api/files/upload', authMiddleware, upload.single('file'), async (req,
   
   try {
     // Ensure user profile exists (fallback for existing users)
-    const { data: existingProfile } = await supabase
+    const { data: existingProfile, error: profileCheckError } = await supabase
       .from('profiles')
       .select('id')
       .eq('id', req.user.id)
       .single();
     
+    console.log('Profile check result:', { existingProfile, profileCheckError, userId: req.user.id });
+    
     if (!existingProfile) {
+      console.log('Creating profile for user:', req.user.id);
       // Create profile if it doesn't exist
-      const { error: profileError } = await supabase
+      const { data: newProfile, error: profileError } = await supabase
         .from('profiles')
         .insert({
           id: req.user.id,
           email: req.user.email,
           role: null
-        });
+        })
+        .select();
+      
+      console.log('Profile creation result:', { newProfile, profileError });
       
       if (profileError) {
         console.error('Profile creation error:', profileError.message);
-        return res.status(500).json({ error: 'Failed to create user profile' });
+        return res.status(500).json({ 
+          error: 'Failed to create user profile',
+          details: profileError.message 
+        });
       }
     }
     
