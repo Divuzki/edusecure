@@ -141,6 +141,14 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
       // Create a unique path for the file
       const filePath = `${user.id}/${Date.now()}-${fileName}`;
 
+      // Simulate upload progress since Supabase doesn't support onUploadProgress
+      const progressInterval = setInterval(() => {
+        setUploadProgress(prev => {
+          if (prev >= 90) return prev; // Stop at 90% until upload completes
+          return prev + Math.random() * 15;
+        });
+      }, 100);
+
       // Upload the file to Supabase Storage
       const { error: uploadError } = await supabase.storage
         .from("files")
@@ -149,7 +157,15 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
           upsert: false,
         });
 
+      clearInterval(progressInterval);
+      
       if (uploadError) throw uploadError;
+
+      // Set progress to 100% after successful upload
+      setUploadProgress(100);
+      
+      // Small delay to show 100% progress
+      await new Promise(resolve => setTimeout(resolve, 200));
 
       // Add file metadata to the database
       const { error: dbError } = await supabase.from("files").insert({
