@@ -86,17 +86,18 @@ CREATE POLICY "Users can read own files"
   USING (owner_id = auth.uid());
 
 -- Allow teachers to read student files
-CREATE POLICY "Teachers can read student files"
-  ON files
-  FOR SELECT
-  TO authenticated
-  USING (
-    EXISTS (
-      SELECT 1 FROM profiles
-      WHERE id = auth.uid() AND role = 'teacher'
-    )
-    AND owner_role = 'student'
-  );
+-- DISABLED: This policy references owner_role column which was removed
+-- CREATE POLICY "Teachers can read student files"
+--   ON files
+--   FOR SELECT
+--   TO authenticated
+--   USING (
+--     EXISTS (
+--       SELECT 1 FROM profiles
+--       WHERE id = auth.uid() AND role = 'teacher'
+--     )
+--     AND owner_role = 'student'
+--   );
 
 -- Allow admins to read all files
 CREATE POLICY "Admins can read all files"
